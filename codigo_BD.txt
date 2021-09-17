@@ -1,0 +1,54 @@
+using System.Data;
+using System.Data.SqlClient;
+
+namespace formprac1v2
+{     
+
+      public partial class form1 : form
+      {
+             public SqlConnection con = new SqlConnection(@"Data Source=             (localdb)\MSSQLLocalDB;Initial Catalog=DemoDB;Integrated                           Security=True");
+             SqlCommand cmd
+
+             public form1()
+             {
+                   initializecomponent();
+             }
+            
+             private void form1_load(object sender, eventargs e)
+             {
+                   try
+                   {
+                   con.Open();
+                   MessageBox.Show("Conexion creada con exito!");
+                   con.Close();
+             }
+             catch
+             {
+                   messagebox.show("error al crear la conexion");
+                   this.close();
+             }
+             }
+             
+             private void button1_click(object sender, eventargs e)
+             {
+                   con.Open();
+
+                   string query = "Select * from Alumno";
+                   cmd = new SqlCommand(query, con);
+
+                   //Set the SqlDataAdapter object
+                   SqlDataAdapter dAdapter = new SqlDataAdapter(cmd);
+
+                   //define dataset
+                   DataSet ds = new DataSet();
+
+                   //fill dataset with query results
+                   dAdapter.Fill(ds);
+
+                   dataGridView1.ReadOnly = true;
+                   dataGridView1.DataSource = ds.Tables[0];
+
+                   con.Close();
+             }
+      }
+}
